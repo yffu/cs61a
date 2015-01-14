@@ -1,0 +1,325 @@
+; Ex. 2.74
+
+; a) ("Specified personnel file" assumed here to mean the single file from each division containing keyed records on all their employees): the programmers for each division should interface their own get-record using (put 'get-record 'division-name get-record) to the entire system. The generic get-record would then take a division name and match it to the correct column or row for the specified get-record function. The divison files should contain subsets of employee files, which are keyed by name.
+
+; b) same interfacing idea as the previous question, except 'get-record is replaced by another function name. The salary of the employee is found somewhere in the content of the employee file. The division-specific function is located by apply-generic, after the division name and generic function name are supplied. The function is assumed to operate on an employee name to locate the salary within the individual's record.
+
+; c) A constructor is first implemented to tag each division's file with the name of the division. The set of all tagged division files is then placed in a single list. The programmers for each division implement their package (in this case get-record) using (put 'get-record 'division-name get-record) to interface with the entire system. The generic get-record is then defined by calling apply-generic, which should strip the tag from any division files and match them with the division-specific function. Division names need to be supplied, in constructing the larger conglomerate file from the division files.
+
+; d) The only change that needs to be made is to interface the new company's selectors and constructors with the larger system. The new division's file would then be added to the list of existing ones, with the division name as tag.
+
+; Ex. 2.75
+
+(define (make-from-mag-ang x y)
+  (define (dispatch op)
+    (cond ((eq? op 'real-part) (* (cos y) x))
+	  ((eq? op 'imag-part) (* (sin y) x))
+	  ((eq? op 'magnitude) x)
+	  ((eq? op 'angle) y)
+    (else
+     (error "Unknown op -- MAKE-FROM-MAG-ANG" op))))
+  dispatch)
+
+; Ex. 2.76
+
+; explicit dispatch --> to add a new type, a new set of all the operations that cannot be carried over need to be redefined; generic operations need to add a new condition with the type; names for specific op-type procedures need checking to not conflict. A new operation must be added to each set of specific operators in order to be implemented; A new generic operator procedure needs to be defined, with clauses for all data types. Does not excel at any application.
+
+; data-directed programming --> best for adding new operations, also good for new type. To add new types, use put to map op-type pair with specific constructors and selectors; nothing needs to be changed in the generic operator procedures. For adding new data operations, a new generic operation needs to be defined for each data type; op-type specific procedures need to be added using put.
+
+; message-passing --> best for adding new types. To add new types, define constructor for new type, with all the existing operations within cond clauses inside. New operations need to added individually to each type-specific constructor.
+
+; Ex. 2.77
+
+; The call to magnitude first calls apply-generic with the 'magnitude and the tag 'complex, which invokes magnitude once again on the cdr of the original argument. The operator tag is still 'magnitude, but the type-tag is now 'rectangular, which lead to the invocation of internal procedures, and the evaluation of the expression. So apply-generic is called twice.
+
+
+; Ex. 2.79
+
+(define (install-equal)
+  (put 'equ? '(scheme-number scheme-number) (lambda (x y) (= x y)))
+  (put 'equ? '(rational rational) (lambda (x y) (and (= (car x) (car y)) (= (cdr x) (cdr y)))))
+  (put 'equ? '(complex complex) (lambda (x y) (and (= (car x) (car y)) (= (cdr x) (cdr y))))))
+
+(define (equ? x y)
+  (apply-generic 'equ x y))
+
+; Ex. 2.80
+
+(define (=zero? x)
+  (apply-generic '=zero? x))
+
+(define (install-zero)
+  (put '=zero? '(scheme-number) (lambda (x) (= x 0)))
+  (put '=zero? '(rational) (lambda (x) (cond ((= (numer x) 0) #t)
+					     ((= (denom x) 0) (error "Zero denominator")))))
+  (put '=zero? '(complex) (lambda (x) (and (= (real-part x) 0) (= (imag-part x) 0)))))
+
+; Ex. 2.81
+
+; a. In the case of two scheme-numbers, the type-tag/ op combination would get a procedure back from the scheme package. However, for the complex number case, the get procedure returns null for proc, and the type of number one is coerced to complex again. With t1->t2 defined as an identity function, the conditional clause t1->t2 is fulfilled, and apply-function is called again with the same arguments that have no corresponding function. This results in the infinite loop.
+
+; b. Is Louis correct that something had to be done about coercion with arguments of the same type, or does apply-generic work correctly as is?
+
+; apply-generic works correctly as it is, since to coerce data of the same type to each other is pointless, and has no hopes of finding a proc using apply-generic. It should work, but could be made more efficient by installing a clause to stop coercing data of the same type.
+
+; c. Modify apply-generic so that it doesn't try coercion if the two arguments have the same type. added if statement after testing for type-tags length, to test if both tags were the same. If so, return error.
+
+(define (apply-generic op . args)
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc
+          (apply proc (map contents args))
+	      (if (= (length args) 2)
+		    (if (= (car type-tags) (cadr type-tags))
+	      (error "No method for these types" (list op type-tags))
+              ((let ((type1 (car type-tags))
+                    (type2 (cadr type-tags))
+                    (a1 (car args))
+                    (a2 (cadr args)))
+                (let ((t1->t2 (get-coercion type1 type2))
+                      (t2->t1 (get-coercion type2 type1)))
+                  (cond (t1->t2
+                         (apply-generic op (t1->t2 a1) a2))
+                        (t2->t1
+                         (apply-generic op a1 (t2->t1 a2)))
+                        (else
+                         (error "No method for these types"
+                                (list op type-tags)))))))
+              (error "No method for these types"
+                     (list op type-tags))))))))
+
+; Ex. 2.83
+
+(put 'raise '(scheme-number) (lambda (x) (make-rational x 0)))
+(put 'raise '(rational) (lambda (x) (make-real x 'positive)))
+(put 'raise '(real) (lambda (x) (make-complex-from-real-imag x 0)))
+(put 'make 'real (lambda (n d) (tag (make-real n d))))
+
+; local definitions for reals
+(define (tag x) (attach-tag 'real x))
+(define (make-real x sign)
+  (cons sign x))
+  
+(define (make-real x) ; generic operator
+  (apply-generic 'make 'real x))
+
+(define (raise x)
+  (apply-generic 'raise x))
+
+; If you haven’t already finished this week’s lab exercises that involve the scheme-1 interpreter, do it now. Then write a map primitive for scheme-1 (call it map-1 so you and Scheme don’t get confused about which is which) that works correctly for all mapped procedures. Modify the scheme-1 interpreter to add the let special form. Hint: Like a procedure call, let will have to use substitute to replace certain variables with their values. Don’t forget to evaluate the expressions that provide those values!
+
+
+;; Simple evaluator for Scheme without DEFINE, using substitution model.
+;; Version 1: No DEFINE, only primitive names are global.
+
+;; The "read-eval-print loop" (REPL):
+
+(define (scheme-1)
+  (display "Scheme-1: ")
+  (flush)
+  (print (eval-1 (read)))
+  (scheme-1))
+
+;; Two important procedures:
+;; EVAL-1 takes an expression and returns its value.
+;; APPLY-1 takes a procedure and a list of actual argument values, and
+;;  calls the procedure.
+;; They have these names to avoid conflict with STk's EVAL and APPLY,
+;;  which have similar meanings.
+
+;; Comments on EVAL-1:
+
+;; There are four basic expression types in Scheme:
+;;    1. self-evaluating (a/k/a constant) expressions: numbers, #t, etc.
+;;    2. symbols (variables)
+;;    3. special forms (in this evaluator, just QUOTE, IF, and LAMBDA)
+;;    4. procedure calls (can call a primitive or a LAMBDA-generated procedure)
+
+;; 1.  The value of a constant is itself.  Unlike real Scheme, an STk
+;; procedure is here considered a constant expression.  You can't type in
+;; procedure values, but the value of a global variable can be a procedure,
+;; and that value might get substituted for a parameter in the body of a
+;; higher-order function such as MAP, so the evaluator has to be ready to
+;; see a built-in procedure as an "expression."  Therefore, the procedure
+;; CONSTANT? includes a check for (PROCEDURE? EXP).
+
+;; 2.  In the substitution model, we should never actually evaluate a *local*
+;; variable name, because we should have substituted the actual value for
+;; the parameter name before evaluating the procedure body.
+
+;; In this simple evaluator, there is no DEFINE, and so the only *global*
+;; symbols are the ones representing primitive procedures.  We cheat a little
+;; by using STk's EVAL to get the values of these variables.
+
+;; 3.  The value of the expression (QUOTE FOO) is FOO -- the second element of
+;; the expression.
+
+;; To evaluate the expression (IF A B C) we first evaluate A; then, if A is
+;; true, we evaluate B; if A is false, we evaluate C.
+
+;; The value of a LAMBDA expression is the expression itself.  There is no
+;; work to do until we actually call the procedure.  (This won't be true
+;; when we write a more realistic interpreter that handles more Scheme
+;; features, but it works in the substitution model.)
+
+;; 4.  To evaluate a procedure call, we recursively evaluate all the
+;; subexpressions.  We call APPLY-1 to handle the actual procedure invocation.
+
+(define (eval-1 exp)
+  (cond ((constant? exp) exp)
+	((symbol? exp) (eval exp))	; use underlying Scheme's EVAL
+	((quote-exp? exp) (cadr exp))
+	((if-exp? exp)
+	 (if (eval-1 (cadr exp))
+	     (eval-1 (caddr exp))
+	     (eval-1 (cadddr exp))))
+	((lambda-exp? exp) exp)
+	((pair? exp) (apply-1 (eval-1 (car exp))      ; eval the operator
+			      (map eval-1 (cdr exp))))
+	(else (error "bad expr: " exp))))
+
+
+;; Comments on APPLY-1:
+
+;; There are two kinds of procedures: primitive and LAMBDA-created.
+
+;; We recognize a primitive procedure using the PROCEDURE? predicate in
+;; the underlying STk interpreter.
+
+;; If the procedure isn't primitive, then it must be LAMBDA-created.
+;; In this interpreter (but not in later, more realistic ones), the value
+;; of a LAMBDA expression is the expression itself.  So (CADR PROC) is
+;; the formal parameter list, and (CADDR PROC) is the expression in the
+;; procedure body.
+
+;; To call the procedure, we must substitute the actual arguments for
+;; the formal parameters in the body; the result of this substitution is
+;; an expression which we can then evaluate with EVAL-1.
+
+(define (apply-1 proc args)
+  (cond ((procedure? proc)	; use underlying Scheme's APPLY
+	 (apply proc args))
+	((lambda-exp? proc)
+	 (eval-1 (substitute (caddr proc)   ; the body
+			     (cadr proc)    ; the formal parameters
+			     args           ; the actual arguments
+			     '())))	    ; bound-vars, see below
+	(else (error "bad proc: " proc))))
+
+
+;; Some trivial helper procedures:
+
+(define (constant? exp)
+  (or (number? exp) (boolean? exp) (string? exp) (procedure? exp)))
+
+(define (exp-checker type)
+  (lambda (exp) (and (pair? exp) (eq? (car exp) type)))) ; that the thing is a pair and the tag it has in its car matches the type we want
+
+(define quote-exp? (exp-checker 'quote))
+(define if-exp? (exp-checker 'if))
+(define lambda-exp? (exp-checker 'lambda))
+
+
+;; SUBSTITUTE substitutes actual arguments for *free* references to the
+;; corresponding formal parameters.  For example, given the expression
+;;
+;;	((lambda (x y)
+;;	   ((lambda (x) (+ x y))
+;;	    (* x y)))
+;;	 5 8)
+;;
+;; the body of the procedure we're calling is
+;;
+;;	   ((lambda (x) (+ x y))
+;;	    (* x y))
+;;
+;; and we want to substitute 5 for X and 8 for Y, but the result should be
+;;
+;;	   ((lambda (x) (+ x 8))
+;;	    (* 5 8))
+;;
+;; and *NOT*
+;;
+;;	   ((lambda (5) (+ 5 8))
+;;	    (* 5 8))
+;;
+;; The X in (* X Y) is a "free reference," but the X in (LAMBDA (X) (+ X Y))
+;; is a "bound reference."
+;;
+;; To make this work, in its recursive calls, SUBSTITUTE keeps a list of
+;; bound variables in the current subexpression -- ones that shouldn't be
+;; substituted for -- in its argument BOUND.  This argument is the empty
+;; list in the top-level call to SUBSTITUTE from APPLY-1.
+
+;; Another complication is that when an argument value isn't a self-evaluating
+;; expression, we actually want to substitute the value *quoted*.  For example,
+;; consider the expression
+;;
+;;	((lambda (x) (first x)) 'foo)
+;;
+;; The actual argument value is FOO, but we want the result of the
+;; substitution to be
+;;
+;;	(first 'foo)
+;;
+;; and not
+;;
+;;	(first foo)
+;;
+;; because what we're going to do with this expression is try to evaluate
+;; it, and FOO would be an unbound variable.
+
+;; There is a strangeness in MAYBE-QUOTE, which must handle the
+;; case of a primitive procedure as the actual argument value; these
+;; procedures shouldn't be quoted.
+
+(define (substitute exp params args bound)
+  (cond ((constant? exp) exp)
+	((symbol? exp)
+	 (if (memq exp bound)
+	     exp
+	     (lookup exp params args)))
+	((quote-exp? exp) exp)
+	((lambda-exp? exp)
+	 (list 'lambda
+	       (cadr exp)
+	       (substitute (caddr exp) params args (append bound (cadr exp)))))
+	(else (map (lambda (subexp) (substitute subexp params args bound))
+		   exp))))
+
+(define (lookup name params args)
+  (cond ((null? params) name)
+	((eq? name (car params)) (maybe-quote (car args)))
+	(else (lookup name (cdr params) (cdr args)))))
+
+(define (maybe-quote value)
+  (cond ((lambda-exp? value) value)
+	((constant? value) value)
+	((procedure? value) value)	; real Scheme primitive procedure
+	(else (list 'quote value))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Sample evaluation, computing factorial of 5:
+
+; Scheme-1: ((lambda (n)
+;	       ((lambda (f) (f f n))
+;		(lambda (f n)
+;		   (if (= n 0)
+;		       1
+;		       (* n (f f (- n 1))) )) ))
+;	     5)
+; 120
+
+;; Sample evaluation, using a primitive as argument to MAP:
+
+; Scheme-1: ((lambda (f n)
+;	       ((lambda (map) (map map f n))
+;		   (lambda (map f n)
+;		     (if (null? n)
+;		         '()
+;			 (cons (f (car n)) (map map f (cdr n))) )) ))
+;	      first
+;	      '(the rain in spain))
+; (t r i s)
+

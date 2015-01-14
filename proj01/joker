@@ -1,0 +1,12 @@
+okay
+STk> (best-total '(ad 8s joker))
+21
+STk> (best-total '(ad as 9h))
+21
+STk> (best-total '(joker joker))
+21
+STk> (play-n reckless-valentine 4)
+-2
+STk> (play-n majority-strategy 4)
+-2
+STk> (transcript-off)

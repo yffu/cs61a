@@ -1,0 +1,215 @@
+okay
+STk> (load "scheme1.scm")
+okay
+STk> (scheme-1)
+Scheme-1: 
+(+ 1 2)3
+Scheme-1: 
+((lambda (x) (* x 2)) 2)4
+Scheme-1: 
+(first '234)2
+Scheme-1: 
+(first 234)2
+Scheme-1: 
+(first '(234))234
+Scheme-1: 
+()*** Error:
+    bad expr: ()
+Current eval stack:
+__________________
+  0    (apply stk-error args)
+  1    (print (eval-1 (read)))
+  2    (scheme-1)
+STk> (trace scheme-1 eval-1 apply-1 substitute look-up maybe-quote)
+*** Error:
+    set!: variable not defined: look-up
+Current eval stack:
+__________________
+  0    (set! look-up ((with-module trace trace-symbol) (quote look-up) look-up (the-environment)))
+  1    (begin (set! scheme-1 ((with-module trace trace-symbol) (quote scheme-1) scheme-1 (the-environment))) (set! eval-1 ((with-module trace trace-symbol) (quote eval-1) eval-1 (the-environment))) (set! apply-1 ((with-module trace trace-symbol) (quote apply-1) apply-1 (the-environment))) (set! substitute ((with-module trace trace-symbol) (quote substitute) substitute (the-environment))) (set! look-up ((with-module trace trace-symbol) (quote look-up) look-up (the-environment))) (set! maybe-quote ((with-module trace trace-symbol) (quote maybe-quote) maybe-quote (the-environment))))
+STk> (trace scheme-1 eval-1 apply-1 substitute lookup maybe-quote)
+*** Error:
+    trace: procedure ``scheme-1'' is already traced
+Current eval stack:
+__________________
+  0    (error "trace: procedure ``~S'' is already traced" symbol)
+  1    ((with-module trace trace-symbol) (quote scheme-1) scheme-1 (the-environment))
+  2    (set! scheme-1 ((with-module trace trace-symbol) (quote scheme-1) scheme-1 (the-environment)))
+  3    (begin (set! scheme-1 ((with-module trace trace-symbol) (quote scheme-1) scheme-1 (the-environment))) (set! eval-1 ((with-module trace trace-symbol) (quote eval-1) eval-1 (the-environment))) (set! apply-1 ((with-module trace trace-symbol) (quote apply-1) apply-1 (the-environment))) (set! substitute ((with-module trace trace-symbol) (quote substitute) substitute (the-environment))) (set! lookup ((with-module trace trace-symbol) (quote lookup) lookup (the-environment))) (set! maybe-quote ((with-module trace trace-symbol) (quote maybe-quote) maybe-quote (the-environment))))
+STk> (trace eval-1 apply-1 substitute lookup maybe-quote)
+*** Error:
+    trace: procedure ``eval-1'' is already traced
+Current eval stack:
+__________________
+  0    (error "trace: procedure ``~S'' is already traced" symbol)
+  1    ((with-module trace trace-symbol) (quote eval-1) eval-1 (the-environment))
+  2    (set! eval-1 ((with-module trace trace-symbol) (quote eval-1) eval-1 (the-environment)))
+  3    (begin (set! eval-1 ((with-module trace trace-symbol) (quote eval-1) eval-1 (the-environment))) (set! apply-1 ((with-module trace trace-symbol) (quote apply-1) apply-1 (the-environment))) (set! substitute ((with-module trace trace-symbol) (quote substitute) substitute (the-environment))) (set! lookup ((with-module trace trace-symbol) (quote lookup) lookup (the-environment))) (set! maybe-quote ((with-module trace trace-symbol) (quote maybe-quote) maybe-quote (the-environment))))
+STk> (scheme-1)
+.. -> scheme-1 Scheme-1: 
+((lambda (x) (+ x 3)) 5).... -> eval-1 with exp = ((lambda (x) (+ x 3)) 5)
+...... -> eval-1 with exp = (lambda (x) (+ x 3))
+...... <- eval-1 returns (lambda (x) (+ x 3))
+...... -> eval-1 with exp = 5
+...... <- eval-1 returns 5
+...... -> apply-1 with proc = (lambda (x) (+ x 3)),  args = (5)
+........ -> substitute with exp = (+ x 3),  params = (x),  args = (5),  bound = ()
+.......... -> substitute with exp = +,  params = (x),  args = (5),  bound = ()
+.......... <- substitute returns +
+.......... -> substitute with exp = x,  params = (x),  args = (5),  bound = ()
+.......... <- substitute returns 5
+.......... -> substitute with exp = 3,  params = (x),  args = (5),  bound = ()
+.......... <- substitute returns 3
+........ <- substitute returns (+ 5 3)
+........ -> eval-1 with exp = (+ 5 3)
+.......... -> eval-1 with exp = +
+.......... <- eval-1 returns #[closure arglist=args 7ff53de8]
+.......... -> eval-1 with exp = 5
+.......... <- eval-1 returns 5
+.......... -> eval-1 with exp = 3
+.......... <- eval-1 returns 3
+.......... -> apply-1 with proc = #[closure arglist=args 7ff53de8],  args = (5 3)
+.......... <- apply-1 returns 8
+........ <- eval-1 returns 8
+...... <- apply-1 returns 8
+.... <- eval-1 returns 8
+8
+.... -> scheme-1 Scheme-1: 
+(((lambda (f g)
+(lambda (x) (f (g x)))
+first
+bf)
+'(the rain in spain))
+(((lambda (f g)
+(lambda (x) (f (g x))))
+first
+bf)
+'(the rain in spain))
+
+()
+)...... -> eval-1 with exp = (((lambda (f g) (lambda (x) (f (g x))) first bf) (quote (the rain in spain))) (((lambda (f g) (lambda (x) (f (g x)))) first bf) (quote (the rain in spain))) ())
+........ -> eval-1 with exp = ((lambda (f g) (lambda (x) (f (g x))) first bf) (quote (the rain in spain)))
+.......... -> eval-1 with exp = (lambda (f g) (lambda (x) (f (g x))) first bf)
+.......... <- eval-1 returns (lambda (f g) (lambda (x) (f (g x))) first bf)
+.......... -> eval-1 with exp = (quote (the rain in spain))
+.......... <- eval-1 returns (the rain in spain)
+.......... -> apply-1 with proc = (lambda (f g) (lambda (x) (f (g x))) first bf),  args = ((the rain in spain))
+............ -> substitute with exp = (lambda (x) (f (g x))),  params = (f g),  args = ((the rain in spain)),  bound = ()
+.............. -> substitute with exp = (f (g x)),  params = (f g),  args = ((the rain in spain)),  bound = (x)
+................ -> substitute with exp = f,  params = (f g),  args = ((the rain in spain)),  bound = (x)
+................ <- substitute returns (quote (the rain in spain))
+................ -> substitute with exp = (g x),  params = (f g),  args = ((the rain in spain)),  bound = (x)
+.................. -> substitute with exp = g,  params = (f g),  args = ((the rain in spain)),  bound = (x)
+*** Error:
+    car: wrong type of argument
+Current eval stack:
+__________________
+  0    (car args)
+  1    (maybe-quote (car args))
+  2    (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)
+  3    (dynamic-wind (lambda () (set! *indentation* (+ *indentation* 2))) (lambda () (format *err-port* "~A -> ~A " (indent) symbol) (trace-args value l) (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)) (lambda () (set! *indentation* (- *indentation* 2))))
+  4    (map (lambda (subexp) (substitute subexp params args bound)) exp)
+  5    (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)
+  6    (dynamic-wind (lambda () (set! *indentation* (+ *indentation* 2))) (lambda () (format *err-port* "~A -> ~A " (indent) symbol) (trace-args value l) (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)) (lambda () (set! *indentation* (- *indentation* 2))))
+  7    (map (lambda (subexp) (substitute subexp params args bound)) exp)
+  8    (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)
+  9    (dynamic-wind (lambda () (set! *indentation* (+ *indentation* 2))) (lambda () (format *err-port* "~A -> ~A " (indent) symbol) (trace-args value l) (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)) (lambda () (set! *indentation* (- *indentation* 2))))
+ 10    (list (quote lambda) (cadr exp) (substitute (caddr exp) params args (append bound (cadr exp))))
+...
+STk> (scheme-1)
+.. -> scheme-1 Scheme-1: 
+(((lambda (f g)
+(lambda (x) (f (g x))))
+first
+bf)
+'(the rain in spain)).... -> eval-1 with exp = (((lambda (f g) (lambda (x) (f (g x)))) first bf) (quote (the rain in spain)))
+...... -> eval-1 with exp = ((lambda (f g) (lambda (x) (f (g x)))) first bf)
+........ -> eval-1 with exp = (lambda (f g) (lambda (x) (f (g x))))
+........ <- eval-1 returns (lambda (f g) (lambda (x) (f (g x))))
+........ -> eval-1 with exp = first
+........ <- eval-1 returns #[closure arglist=(x) 7ff8b828]
+........ -> eval-1 with exp = bf
+........ <- eval-1 returns #[closure arglist=(x) 7ff89bc8]
+........ -> apply-1 with proc = (lambda (f g) (lambda (x) (f (g x)))),  args = (#[closure arglist=(x) 7ff8b828] #[closure arglist=(x) 7ff89bc8])
+.......... -> substitute with exp = (lambda (x) (f (g x))),  params = (f g),  args = (#[closure arglist=(x) 7ff8b828] #[closure arglist=(x) 7ff89bc8]),  bound = ()
+............ -> substitute with exp = (f (g x)),  params = (f g),  args = (#[closure arglist=(x) 7ff8b828] #[closure arglist=(x) 7ff89bc8]),  bound = (x)
+.............. -> substitute with exp = f,  params = (f g),  args = (#[closure arglist=(x) 7ff8b828] #[closure arglist=(x) 7ff89bc8]),  bound = (x)
+.............. <- substitute returns #[closure arglist=(x) 7ff8b828]
+.............. -> substitute with exp = (g x),  params = (f g),  args = (#[closure arglist=(x) 7ff8b828] #[closure arglist=(x) 7ff89bc8]),  bound = (x)
+................ -> substitute with exp = g,  params = (f g),  args = (#[closure arglist=(x) 7ff8b828] #[closure arglist=(x) 7ff89bc8]),  bound = (x)
+................ <- substitute returns #[closure arglist=(x) 7ff89bc8]
+................ -> substitute with exp = x,  params = (f g),  args = (#[closure arglist=(x) 7ff8b828] #[closure arglist=(x) 7ff89bc8]),  bound = (x)
+................ <- substitute returns x
+.............. <- substitute returns (#[closure arglist=(x) 7ff89bc8] x)
+............ <- substitute returns (#[closure arglist=(x) 7ff8b828] (#[closure arglist=(x) 7ff89bc8] x))
+.......... <- substitute returns (lambda (x) (#[closure arglist=(x) 7ff8b828] (#[closure arglist=(x) 7ff89bc8] x)))
+.......... -> eval-1 with exp = (lambda (x) (#[closure arglist=(x) 7ff8b828] (#[closure arglist=(x) 7ff89bc8] x)))
+.......... <- eval-1 returns (lambda (x) (#[closure arglist=(x) 7ff8b828] (#[closure arglist=(x) 7ff89bc8] x)))
+........ <- apply-1 returns (lambda (x) (#[closure arglist=(x) 7ff8b828] (#[closure arglist=(x) 7ff89bc8] x)))
+...... <- eval-1 returns (lambda (x) (#[closure arglist=(x) 7ff8b828] (#[closure arglist=(x) 7ff89bc8] x)))
+...... -> eval-1 with exp = (quote (the rain in spain))
+...... <- eval-1 returns (the rain in spain)
+...... -> apply-1 with proc = (lambda (x) (#[closure arglist=(x) 7ff8b828] (#[closure arglist=(x) 7ff89bc8] x))),  args = ((the rain in spain))
+........ -> substitute with exp = (#[closure arglist=(x) 7ff8b828] (#[closure arglist=(x) 7ff89bc8] x)),  params = (x),  args = ((the rain in spain)),  bound = ()
+.......... -> substitute with exp = #[closure arglist=(x) 7ff8b828],  params = (x),  args = ((the rain in spain)),  bound = ()
+.......... <- substitute returns #[closure arglist=(x) 7ff8b828]
+.......... -> substitute with exp = (#[closure arglist=(x) 7ff89bc8] x),  params = (x),  args = ((the rain in spain)),  bound = ()
+............ -> substitute with exp = #[closure arglist=(x) 7ff89bc8],  params = (x),  args = ((the rain in spain)),  bound = ()
+............ <- substitute returns #[closure arglist=(x) 7ff89bc8]
+............ -> substitute with exp = x,  params = (x),  args = ((the rain in spain)),  bound = ()
+............ <- substitute returns (quote (the rain in spain))
+.......... <- substitute returns (#[closure arglist=(x) 7ff89bc8] (quote (the rain in spain)))
+........ <- substitute returns (#[closure arglist=(x) 7ff8b828] (#[closure arglist=(x) 7ff89bc8] (quote (the rain in spain))))
+........ -> eval-1 with exp = (#[closure arglist=(x) 7ff8b828] (#[closure arglist=(x) 7ff89bc8] (quote (the rain in spain))))
+.......... -> eval-1 with exp = #[closure arglist=(x) 7ff8b828]
+.......... <- eval-1 returns #[closure arglist=(x) 7ff8b828]
+.......... -> eval-1 with exp = (#[closure arglist=(x) 7ff89bc8] (quote (the rain in spain)))
+............ -> eval-1 with exp = #[closure arglist=(x) 7ff89bc8]
+............ <- eval-1 returns #[closure arglist=(x) 7ff89bc8]
+............ -> eval-1 with exp = (quote (the rain in spain))
+............ <- eval-1 returns (the rain in spain)
+............ -> apply-1 with proc = #[closure arglist=(x) 7ff89bc8],  args = ((the rain in spain))
+............ <- apply-1 returns (rain in spain)
+.......... <- eval-1 returns (rain in spain)
+.......... -> apply-1 with proc = #[closure arglist=(x) 7ff8b828],  args = ((rain in spain))
+.......... <- apply-1 returns rain
+........ <- eval-1 returns rain
+...... <- apply-1 returns rain
+.... <- eval-1 returns rain
+rain
+.... -> scheme-1 Scheme-1: 
+(map first '(the rain in spain))...... -> eval-1 with exp = (map first (quote (the rain in spain)))
+........ -> eval-1 with exp = map
+........ <- eval-1 returns #[subr map]
+........ -> eval-1 with exp = first
+........ <- eval-1 returns #[closure arglist=(x) 7ff8b828]
+........ -> eval-1 with exp = (quote (the rain in spain))
+........ <- eval-1 returns (the rain in spain)
+........ -> apply-1 with proc = #[subr map],  args = (#[closure arglist=(x) 7ff8b828] (the rain in spain))
+........ <- apply-1 returns (t r i s)
+...... <- eval-1 returns (t r i s)
+(t r i s)
+...... -> scheme-1 Scheme-1: 
+()........ -> eval-1 with exp = ()
+*** Error:
+    bad expr: ()
+Current eval stack:
+__________________
+  0    (apply stk-error args)
+  1    (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)
+  2    (dynamic-wind (lambda () (set! *indentation* (+ *indentation* 2))) (lambda () (format *err-port* "~A -> ~A " (indent) symbol) (trace-args value l) (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)) (lambda () (set! *indentation* (- *indentation* 2))))
+  3    (print (eval-1 (read)))
+  4    (apply value l)
+  5    (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)
+  6    (dynamic-wind (lambda () (set! *indentation* (+ *indentation* 2))) (lambda () (format *err-port* "~A -> ~A " (indent) symbol) (trace-args value l) (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)) (lambda () (set! *indentation* (- *indentation* 2))))
+  7    (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)
+  8    (dynamic-wind (lambda () (set! *indentation* (+ *indentation* 2))) (lambda () (format *err-port* "~A -> ~A " (indent) symbol) (trace-args value l) (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)) (lambda () (set! *indentation* (- *indentation* 2))))
+  9    (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)
+ 10    (dynamic-wind (lambda () (set! *indentation* (+ *indentation* 2))) (lambda () (format *err-port* "~A -> ~A " (indent) symbol) (trace-args value l) (let ((res (apply value l))) (format *err-port* "~A <- ~A returns ~W\n" (indent) symbol res) res)) (lambda () (set! *indentation* (- *indentation* 2))))
+STk> (load "geom.scm")
+*** Error:
+    load: cannot open file: "geom.scm"
+Current eval stack:
+__________________
+  0    (load "geom.scm")
+STk> 

@@ -1,0 +1,42 @@
+okay
+STk> (upper-bound (make-interval 1 4))
+4
+STk> (lower-bound (make-interval 1 4))
+1
+STk> (define a (make-interval 1 4))
+a
+STk> (define b (make-interval 10 12))
+b
+STk> (sub-interval a b)
+(-6 . -11)
+STk> (define d (make-interval -1 7))
+d
+STk> (div-interval a b)
+(0.0833333333333333 . 0.4)
+STk> (define c (make-center-percent 36 0.1))
+c
+STk> (center c)
+36.0
+STk> (percent c)
+0.1
+STk> (last-pair (list 1 4 9 16 25))
+(25)
+STk> (same-parity 1 2 3 4 5 6 7)
+(1 3 5 7)
+STk> (same-parity 2 3 4 5 6 7)
+(2 4 6)
+STk> (square-list (list 1 2 3 4))
+((((() . 1) . 4) . 9) . 16)
+STk> (for-each (lambda (x) (newline) (display x)) (list 57 321 88))
+
+57
+321
+88
+#t
+STk> (substitute1 '((lead guitar) (bass guitar) (rhythm guitar) drums)
+'guitar 'axe)
+((lead axe) (bass axe) (rhythm axe) drums)
+STk> (substitute2 '((4 calling birds) (3 french hens) (2 turtle doves))
+'( 1 2 3 4) '(one two three four))
+((four calling birds) (three french hens) (two turtle doves))
+STk> (transcript-off)

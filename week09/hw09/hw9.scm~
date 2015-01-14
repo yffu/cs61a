@@ -1,0 +1,91 @@
+; Yuan Fang fu
+; cs61a-ae
+; TA: Darren Kuo
+; Section: 13 Group: 08
+
+; Ex. 3.16
+
+; -->XX-->XX-->X/
+;    |    |    |
+;    V    V    V
+;    a    b    c   ; Returns 3
+
+; -->XX-->XX
+;    |    ||
+;    V    VV
+;    a    X/
+;         |
+;         V  ; Returns 4
+;         b
+
+; -->XX
+;    ||
+;    VV
+;    XX
+;    ||
+;    VV
+;    X/  ; Returns 7
+;    |
+;    V
+;    a
+
+
+(define (count-pairs x)
+  (if (not (pair? x))
+      0
+      (+ (count-pairs (car x))
+	 (count-pairs (cdr x))
+	 1)))
+
+; Ex. 3.17 Depthwise traversal
+
+(define (count-pairs-1 list)
+  (let ((aux ()))
+    (define (helper lst)
+      (cond ((not (pair? lst)) 0)
+	    ((memq lst aux) 0)
+	    (else (begin (set! aux (cons lst aux))
+			     (+ 1 (helper-2 lst))))))
+    (define (helper-2 lst)
+      (+ (helper (car lst)) (helper (cdr lst))))
+    (helper list)))
+      
+; Ex. 3.21
+
+; the value printed when the queue is evaluated is the pair with the front pointer to the front of the list specified by the queue, and the rear pointer to the last pair of the list. So the printed result is a list with the car as the whole list, and the cdr of the pair pointing to the last pair of the list.
+
+(define (front-ptr queue) (cdr queue))
+
+(define print-queue front-ptr)
+
+; Ex. 3.25
+
+
+
+; Ex. 3.27
+
+; Q1
+
+(define (vector-append vec1 vec2)
+  (define (loop newvec vec n i)
+    (if (>= n 0)
+(begin (vector-set! newvec i (vector-ref vec n))
+       (loop newvec vec (- n 1) (- i 1)))))
+  (let ((result (make-vector (+ (vector-length vec1) (vector-length vec2)))))
+    (loop result vec1 (- (vector-length vec1) 1) (- (vector-length vec1) 1))
+    (loop result vec2 (- (vector-length vec2) 1) (- (vector-length result) 1))
+    result))
+
+; Q2
+
+(define (vector-append vec1 vec2)
+  (define (loop newvec vec n i)
+    (if (>= n 0)
+(begin (vector-set! newvec i (vector-ref vec n))
+       (loop newvec vec (- n 1) (- i 1)))))
+  (let ((result (make-vector (+ (vector-length vec1) (vector-length vec2)))))
+    (loop result vec1 (- (vector-length vec1) 1) (- (vector-length vec1) 1))
+    (loop result vec2 (- (vector-length vec2) 1) (- (vector-length result) 1))
+    result))
+
+; Q3

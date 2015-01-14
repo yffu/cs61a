@@ -1,0 +1,28 @@
+; Yuan Fang Fu
+; cs61a-ae
+; TA: Darren Kuo
+; Section: 13 Group: 08
+
+; Mapreduce Exercises
+
+; Q1
+
+; a)
+
+(define (inverted-index-mapper kv-pair)
+  (define (helper document pair-list)
+    (if (empty? document) pair-list
+	(helper
+	 (bf document)
+	 (cons (make-kv-pair (first document)
+			     (make-kv-pair (first document) (kv-key kv-pair)))
+	       pair-list))))
+  (helper (kv-value kv-pair) '()))
+
+(define (inverted-index-reducer kv-pair)
+  (
+
+(define (make-inverted-index directory)
+  (mapreduce inverted-index-mapper cons-stream (make-kv-pair 'foo '()) directory))
+
+; (mapreduce mapper reducer basecase set)

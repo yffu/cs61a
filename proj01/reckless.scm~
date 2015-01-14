@@ -1,0 +1,4 @@
+;P9
+
+(define (reckless strategy)
+  (

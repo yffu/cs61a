@@ -1,0 +1,5 @@
+; product of two complex numbers is the vector obtained by stretching one complex number by the length of the other and then rotating it htrough the angle of the other.
+
+; magnitudes multiplied, angles added together in polar form
+
+; depending on wether the magnitude/angle, or the real and imaginary part that is the more useful in a context, we use one form or the other.

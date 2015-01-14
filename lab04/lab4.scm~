@@ -1,0 +1,6 @@
+; Lab04 09/16/2010
+
+(define (+rat a b)
+  (make-rational (+ (* (numerator a) (denominator b))
+		    (* (numerator b) (denominator a)) )
+		 (* (denominator a) (denominator b))))

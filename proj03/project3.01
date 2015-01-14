@@ -1,0 +1,246 @@
+okay
+STk> (trace ask)
+okay
+STk> (ask YuanFang 'go 'northwest)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = go,  args = (northwest)
+.... -> ask with object = #[closure arglist=(message) 7ff0d3a8],  message = look-in,  args = (northwest)
+.... <- ask returns #[closure arglist=(message) 7ff15b28]
+.... -> ask with object = #[closure arglist=(message) 7ff0d3a8],  message = exit,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns disappeared
+
+
+yuanfang moved from .... -> ask with object = #[closure arglist=(message) 7ff0d3a8],  message = name,  args = ()
+.... <- ask returns prospect-house
+prospect-house to .... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = name,  args = ()
+.... <- ask returns soda
+soda
+.... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = enter,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns appeared
+.. <- ask returns appeared
+appeared
+STk> (ask YuanFang 'go 'north)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = go,  args = (north)
+.... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = look-in,  args = (north)
+.... <- ask returns #[closure arglist=(message) 7ff0c728]
+.... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = exit,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns disappeared
+
+
+yuanfang moved from .... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = name,  args = ()
+.... <- ask returns soda
+soda to .... -> ask with object = #[closure arglist=(message) 7ff0c728],  message = name,  args = ()
+.... <- ask returns kirin
+kirin
+.... -> ask with object = #[closure arglist=(message) 7ff0c728],  message = enter,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns appeared
+.. <- ask returns appeared
+appeared
+STk> (ask YuanFang 'look-around)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = look-around,  args = ()
+.... -> ask with object = #[closure arglist=(message) 7ff0c728],  message = things,  args = ()
+.... <- ask returns (#[closure arglist=(message) 7ff0c8f8])
+.... -> ask with object = #[closure arglist=(message) 7ff0c728],  message = people,  args = ()
+.... <- ask returns (#[closure arglist=(message) 7ff21c78])
+.... -> ask with object = #[closure arglist=(message) 7ff0c8f8],  message = name,  args = ()
+.... <- ask returns potstickers
+.. <- ask returns (potstickers)
+(potstickers)
+STk> (ask YuanFang 'take potstickers)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = take,  args = (#[closure arglist=(message) 7ff0c8f8])
+.... -> ask with object = #[closure arglist=(message) 7ff0c8f8],  message = type,  args = ()
+.... <- ask returns thing
+.... -> ask with object = #[closure arglist=(message) 7ff0c728],  message = things,  args = ()
+.... <- ask returns (#[closure arglist=(message) 7ff0c8f8])
+
+yuanfang took .... -> ask with object = #[closure arglist=(message) 7ff0c8f8],  message = name,  args = ()
+.... <- ask returns potstickers
+potstickers
+.... -> ask with object = #[closure arglist=(message) 7ff0c728],  message = people,  args = ()
+.... <- ask returns (#[closure arglist=(message) 7ff21c78])
+.... -> ask with object = #[closure arglist=(message) 7ff0c8f8],  message = change-possessor,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns okay
+.. <- ask returns taken
+taken
+STk> (ask YuanFang 'possessions)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = possessions,  args = ()
+.. <- ask returns (#[closure arglist=(message) 7ff0c8f8])
+(#[closure arglist=(message) 7ff0c8f8])
+STk> (ask YuanFang 'go 'south)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = go,  args = (south)
+.... -> ask with object = #[closure arglist=(message) 7ff0c728],  message = look-in,  args = (south)
+.... <- ask returns #[closure arglist=(message) 7ff15b28]
+.... -> ask with object = #[closure arglist=(message) 7ff0c728],  message = exit,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns disappeared
+
+
+yuanfang moved from .... -> ask with object = #[closure arglist=(message) 7ff0c728],  message = name,  args = ()
+.... <- ask returns kirin
+kirin to .... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = name,  args = ()
+.... <- ask returns soda
+soda
+.... -> ask with object = #[closure arglist=(message) 7ff0c728],  message = gone,  args = (#[closure arglist=(message) 7ff0c8f8])
+.... <- ask returns disappeared
+.... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = appear,  args = (#[closure arglist=(message) 7ff0c8f8])
+.... <- ask returns appeared
+.... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = enter,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns appeared
+.. <- ask returns appeared
+appeared
+STk> (ask YuanFang 'go 'up)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = go,  args = (up)
+.... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = look-in,  args = (up)
+.... <- ask returns #[closure arglist=(message) 7ff13638]
+.... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = exit,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns disappeared
+
+
+yuanfang moved from .... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = name,  args = ()
+.... <- ask returns soda
+soda to .... -> ask with object = #[closure arglist=(message) 7ff13638],  message = name,  args = ()
+.... <- ask returns art-gallery
+art-gallery
+.... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = gone,  args = (#[closure arglist=(message) 7ff0c8f8])
+.... <- ask returns disappeared
+.... -> ask with object = #[closure arglist=(message) 7ff13638],  message = appear,  args = (#[closure arglist=(message) 7ff0c8f8])
+.... <- ask returns appeared
+.... -> ask with object = #[closure arglist=(message) 7ff13638],  message = enter,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns appeared
+.. <- ask returns appeared
+appeared
+STk> (ask YuanFang 'go 'west)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = go,  args = (west)
+.... -> ask with object = #[closure arglist=(message) 7ff13638],  message = look-in,  args = (west)
+.... <- ask returns #[closure arglist=(message) 7ff14ed8]
+.... -> ask with object = #[closure arglist=(message) 7ff13638],  message = exit,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns disappeared
+
+
+yuanfang moved from .... -> ask with object = #[closure arglist=(message) 7ff13638],  message = name,  args = ()
+.... <- ask returns art-gallery
+art-gallery to .... -> ask with object = #[closure arglist=(message) 7ff14ed8],  message = name,  args = ()
+.... <- ask returns bh-office
+bh-office
+.... -> ask with object = #[closure arglist=(message) 7ff13638],  message = gone,  args = (#[closure arglist=(message) 7ff0c8f8])
+.... <- ask returns disappeared
+.... -> ask with object = #[closure arglist=(message) 7ff14ed8],  message = appear,  args = (#[closure arglist=(message) 7ff0c8f8])
+.... <- ask returns appeared
+.... -> ask with object = #[closure arglist=(message) 7ff14ed8],  message = enter,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns appeared
+.. <- ask returns appeared
+appeared
+STk> (ask YuanFang 'lose potstickers)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = lose,  args = (#[closure arglist=(message) 7ff0c8f8])
+.... -> ask with object = #[closure arglist=(message) 7ff0c8f8],  message = change-possessor,  args = (no-one)
+.... <- ask returns okay
+.. <- ask returns lost
+lost
+STk> (ask YuanFang 'look-around)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = look-around,  args = ()
+.... -> ask with object = #[closure arglist=(message) 7ff14ed8],  message = things,  args = ()
+.... <- ask returns (#[closure arglist=(message) 7ff0c8f8])
+.... -> ask with object = #[closure arglist=(message) 7ff14ed8],  message = people,  args = ()
+.... <- ask returns (#[closure arglist=(message) 7ff21c78] #[closure arglist=(message) 7ff30578])
+.... -> ask with object = #[closure arglist=(message) 7ff0c8f8],  message = name,  args = ()
+.... <- ask returns potstickers
+.... -> ask with object = #[closure arglist=(message) 7ff30578],  message = name,  args = ()
+.... <- ask returns brian
+.. <- ask returns (potstickers brian)
+(potstickers brian)
+STk> (ask Brian 'take potstickers)
+.. -> ask with object = #[closure arglist=(message) 7ff30578],  message = take,  args = (#[closure arglist=(message) 7ff0c8f8])
+.... -> ask with object = #[closure arglist=(message) 7ff0c8f8],  message = type,  args = ()
+.... <- ask returns thing
+.... -> ask with object = #[closure arglist=(message) 7ff14ed8],  message = things,  args = ()
+.... <- ask returns (#[closure arglist=(message) 7ff0c8f8])
+
+brian took .... -> ask with object = #[closure arglist=(message) 7ff0c8f8],  message = name,  args = ()
+.... <- ask returns potstickers
+potstickers
+.... -> ask with object = #[closure arglist=(message) 7ff14ed8],  message = people,  args = ()
+.... <- ask returns (#[closure arglist=(message) 7ff21c78] #[closure arglist=(message) 7ff30578])
+.... -> ask with object = #[closure arglist=(message) 7ff21c78],  message = possessions,  args = ()
+.... <- ask returns ()
+.... -> ask with object = #[closure arglist=(message) 7ff0c8f8],  message = change-possessor,  args = (#[closure arglist=(message) 7ff30578])
+.... <- ask returns okay
+.. <- ask returns taken
+taken
+STk> (ask YuanFang 'go 'east)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = go,  args = (east)
+.... -> ask with object = #[closure arglist=(message) 7ff14ed8],  message = look-in,  args = (east)
+.... <- ask returns #[closure arglist=(message) 7ff13638]
+.... -> ask with object = #[closure arglist=(message) 7ff14ed8],  message = exit,  args = (#[closure arglist=(message) 7ff21c78])
+"What's your favorite programming language?"
+
+scheme
+"Good answer, but my favorite is Logo!"
+.... <- ask returns disappeared
+
+
+yuanfang moved from .... -> ask with object = #[closure arglist=(message) 7ff14ed8],  message = name,  args = ()
+.... <- ask returns bh-office
+bh-office to .... -> ask with object = #[closure arglist=(message) 7ff13638],  message = name,  args = ()
+.... <- ask returns art-gallery
+art-gallery
+.... -> ask with object = #[closure arglist=(message) 7ff13638],  message = enter,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns appeared
+.. <- ask returns appeared
+appeared
+STk> (ask YuanFang 'go 'down)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = go,  args = (down)
+.... -> ask with object = #[closure arglist=(message) 7ff13638],  message = look-in,  args = (down)
+.... <- ask returns #[closure arglist=(message) 7ff15b28]
+.... -> ask with object = #[closure arglist=(message) 7ff13638],  message = exit,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns disappeared
+
+
+yuanfang moved from .... -> ask with object = #[closure arglist=(message) 7ff13638],  message = name,  args = ()
+.... <- ask returns art-gallery
+art-gallery to .... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = name,  args = ()
+.... <- ask returns soda
+soda
+.... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = enter,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns appeared
+.. <- ask returns appeared
+appeared
+STk> (ask YuanFang 'go 'south)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = go,  args = (south)
+.... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = look-in,  args = (south)
+.... <- ask returns #[closure arglist=(message) 7ff129e8]
+.... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = exit,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns disappeared
+
+
+yuanfang moved from .... -> ask with object = #[closure arglist=(message) 7ff15b28],  message = name,  args = ()
+.... <- ask returns soda
+soda to .... -> ask with object = #[closure arglist=(message) 7ff129e8],  message = name,  args = ()
+.... <- ask returns pimentel
+pimentel
+.... -> ask with object = #[closure arglist=(message) 7ff129e8],  message = enter,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns appeared
+.. <- ask returns appeared
+appeared
+STk> (ask YuanFang 'go 'south)
+.. -> ask with object = #[closure arglist=(message) 7ff21c78],  message = go,  args = (south)
+.... -> ask with object = #[closure arglist=(message) 7ff129e8],  message = look-in,  args = (south)
+.... <- ask returns #[closure arglist=(message) 7ff11d98]
+.... -> ask with object = #[closure arglist=(message) 7ff129e8],  message = exit,  args = (#[closure arglist=(message) 7ff21c78])
+.... <- ask returns disappeared
+
+
+yuanfang moved from .... -> ask with object = #[closure arglist=(message) 7ff129e8],  message = name,  args = ()
+.... <- ask returns pimentel
+pimentel to .... -> ask with object = #[closure arglist=(message) 7ff11d98],  message = name,  args = ()
+.... <- ask returns 61a-lab
+61a-lab
+.... -> ask with object = #[closure arglist=(message) 7ff11d98],  message = enter,  args = (#[closure arglist=(message) 7ff21c78])
+"The computers seem to be down"
+.... <- ask returns appeared
+.. <- ask returns appeared
+appeared
+STk> (transcipt-off)
+*** Error:
+    unbound variable: transcipt-off
+Current eval stack:
+__________________
+  0    (transcipt-off)
+STk> (transcript-off)

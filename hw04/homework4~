@@ -1,0 +1,132 @@
+okay
+STk> (upper-bound (make-interval 1 4))
+4
+STk> (lower-bound (make-interval 1 4))
+1
+STk> (define a (make-interval 1 4))
+a
+STk> (define b (make-interval 10 12))
+b
+STk> (sub-interval a b)
+(-6 . -11)
+STk> (define d (make-interval -1 7))
+d
+STk> (div-interval a d)
+error
+STk> (div-interval a b)
+*** Error:
+    unbound variable: mul-interval
+Current eval stack:
+__________________
+  0    (mul-interval x (make-interval (/ 1.0 (upper-bound y)) (/ 1.0 (lower-bound y))))
+STk> (load "hw4.scm")
+okay
+STk> (div-interval a b)
+(0.0833333333333333 . 0.4)
+STk> (define c (make-center-percent a))
+*** Error:
+    too few arguments to: (make-center-percent a)
+Current eval stack:
+__________________
+  0    (make-center-percent a)
+  1    (define c (make-center-percent a))
+STk> (define c (make-center-percent 36 0.1))
+*** Error:
+    let: badly formed binding: tolerance
+Current eval stack:
+__________________
+  0    (let (tolerance (* center percent-tolerance)) (make-interval (+ center tolerance) (- center interval)))
+  1    (define c (make-center-percent 36 0.1))
+STk> (load "hw4.scm")
+okay
+STk> (define c (make-center-percent 36 0.1))
+*** Error:
+    let: badly formed binding: tol
+Current eval stack:
+__________________
+  0    (let (tol (* center percent-tolerance)) (make-interval (+ center tol) (- center tol)))
+  1    (define c (make-center-percent 36 0.1))
+STk> (load "hw4.scm")
+okay
+STk> (define c (make-center-percent 36 0.1))
+*** Error:
+    let: badly formed binding: (tol)
+Current eval stack:
+__________________
+  0    (let ((tol) (* center percent-tolerance)) (make-interval (+ center tol) (- center tol)))
+  1    (define c (make-center-percent 36 0.1))
+STk> (load "hw4.scm")
+okay
+STk> (define c (make-center-percent 36 0.1))
+c
+STk> (center c)
+36.0
+STk> (percent c)
+0.2
+STk> (load "hw4.scm")
+okay
+STk> (percent c)
+*** Error:
+    *: not a number: #[closure arglist=(interval) 7ff28238]
+Current eval stack:
+__________________
+  0    (apply fn (map maybe-num args))
+  1    (/ (- (upper-bound interval) (lower-bound interval)) (* 2 center interval))
+STk> (load "hw4.scm")
+okay
+STk> (percent c)
+0.1
+STk> (last-pair (list 1 4 9 16 25))
+(25)
+STk> (same-parity 1 2 3 4 5 6 7)
+(1 3 5 7)
+STk> (same-parity 2 3 4 5 6 7)
+(2 4 6)
+STk> (load "hw4.scm")
+okay
+STk> (square-list (list 1 2 3 4))
+*** Error:
+    unbound variable: square
+Current eval stack:
+__________________
+  0    (square (car things))
+  1    (cons answer (square (car things)))
+  2    (iter (cdr things) (cons answer (square (car things))))
+STk> (load "hw4.scm")
+okay
+STk> (square-list (list 1 2 3 4))
+((((() . 1) . 4) . 9) . 16)
+STk> (for-each (lambda (x) (newline) (display x)) (list 57 321 88))
+
+57*** Error:
+    too few arguments to: (for-each (lambda (x) (newline)))
+Current eval stack:
+__________________
+  0    (for-each (lambda (x) (newline)))
+STk> (load "hw4.scm")
+okay
+STk> (for-each (lambda (x) (newline) (display x)) (list 57 321 88))
+
+57okay
+STk> (load "hw4.scm")
+okay
+STk> (for-each (lambda (x) (newline) (display x)) (list 57 321 88))
+
+57
+321
+88#t
+STk> (load "hw4.scm")
+okay
+STk> (for-each (lambda (x) (newline) (display x)) (list 57 321 88))
+
+57
+321
+88
+#t
+STk> (substitute1 '((lead guitar) (bass guitar) (rhythm guitar) drums)
+'guitar 'axe)
+((lead axe) (bass axe) (rhythm axe) drums)
+STk> (substitute2 '((4 calling birds) (3 french hens) (2 turtle doves))
+'( 1 2 3 4) '(one two three four))
+((four calling birds) (three french hens) (two turtle doves))
+STk> (transcript-off)

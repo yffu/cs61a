@@ -1,0 +1,60 @@
+okay
+STk> (load "proj1.scm")
+okay
+STk> (best-total '(ad 8s))
+19
+STk> (best-total '(ad 8s 5h))
+14
+STk> (best-total '(ad 8s 9h))
+18
+STk> (best-total '(ad as 9h))
+21
+STk> (trace stop-at-17 dealer-sensitive stop-at)
+okay
+STk> (play-n stop-at-17 4)
+.. -> stop-at-17 with customer-hand-so-far = ("8h" "6c"),  dealer-up-card = jc
+.. <- stop-at-17 returns #t
+.. -> stop-at-17 with customer-hand-so-far = ("8h" "6c" "3d"),  dealer-up-card = jc
+.. <- stop-at-17 returns #f
+.. -> stop-at-17 with customer-hand-so-far = ("8d" kc),  dealer-up-card = "7s"
+.. <- stop-at-17 returns #f
+.. -> stop-at-17 with customer-hand-so-far = ("10h" "2c"),  dealer-up-card = ac
+.. <- stop-at-17 returns #t
+.. -> stop-at-17 with customer-hand-so-far = ("10h" "2c" "3c"),  dealer-up-card = ac
+.. <- stop-at-17 returns #t
+.. -> stop-at-17 with customer-hand-so-far = ("10h" "2c" "3c" "5d"),  dealer-up-card = ac
+.. <- stop-at-17 returns #f
+.. -> stop-at-17 with customer-hand-so-far = ("9c" jc),  dealer-up-card = "6d"
+.. <- stop-at-17 returns #f
+2
+STk> (play-n dealer-sensitive 4)
+.. -> dealer-sensitive with customer-hand-so-far = (qc "2d"),  dealer-up-card = kh
+.. <- dealer-sensitive returns #t
+.. -> dealer-sensitive with customer-hand-so-far = (qc "2d" "6s"),  dealer-up-card = kh
+.. <- dealer-sensitive returns #f
+.. -> dealer-sensitive with customer-hand-so-far = ("7h" "2c"),  dealer-up-card = "7d"
+.. <- dealer-sensitive returns #t
+.. -> dealer-sensitive with customer-hand-so-far = ("7h" "2c" "4s"),  dealer-up-card = "7d"
+.. <- dealer-sensitive returns #t
+.. -> dealer-sensitive with customer-hand-so-far = ("7h" "2c" "4s" "6c"),  dealer-up-card = "7d"
+.. <- dealer-sensitive returns #f
+.. -> dealer-sensitive with customer-hand-so-far = ("3d" qh),  dealer-up-card = "5s"
+.. <- dealer-sensitive returns #f
+.. -> dealer-sensitive with customer-hand-so-far = ("9c" "7c"),  dealer-up-card = "3c"
+.. <- dealer-sensitive returns #f
+0
+STk> (play-n (stop-at 20) 4)
+.. -> stop-at with n = 20
+.. <- stop-at returns #[closure arglist=(c d) 7ff25b68]
+-2
+STk> (trace valentines valentines-1 suit-strategy)
+*** Error:
+    set!: variable not defined: valentines
+Current eval stack:
+__________________
+  0    (set! valentines ((with-module trace trace-symbol) (quote valentines) valentines (the-environment)))
+  1    (begin (set! valentines ((with-module trace trace-symbol) (quote valentines) valentines (the-environment))) (set! valentines-1 ((with-module trace trace-symbol) (quote valentines-1) valentines-1 (the-environment))) (set! suit-strategy ((with-module trace trace-symbol) (quote suit-strategy) suit-strategy (the-environment))))
+STk> valentine
+
+#[closure arglist=(c d) 7ff0cf78]
+STk> 

@@ -1,0 +1,186 @@
+okay
+STk> (load "proj1.scm")
+okay
+STk> (best-total '(ad 8s))
+19
+STk> (best-total '(ad 8s 5h))
+14
+STk> (best-total '(ad 8s 9h))
+18
+STk> (best-total '(ad as 9h))
+21
+STk> (trace stop-at-17 dealer-sensitive stop-at)
+okay
+STk> (play-n stop-at-17 4)
+.. -> stop-at-17 with customer-hand-so-far = ("8h" "6c"),  dealer-up-card = jc
+.. <- stop-at-17 returns #t
+.. -> stop-at-17 with customer-hand-so-far = ("8h" "6c" "3d"),  dealer-up-card = jc
+.. <- stop-at-17 returns #f
+.. -> stop-at-17 with customer-hand-so-far = ("8d" kc),  dealer-up-card = "7s"
+.. <- stop-at-17 returns #f
+.. -> stop-at-17 with customer-hand-so-far = ("10h" "2c"),  dealer-up-card = ac
+.. <- stop-at-17 returns #t
+.. -> stop-at-17 with customer-hand-so-far = ("10h" "2c" "3c"),  dealer-up-card = ac
+.. <- stop-at-17 returns #t
+.. -> stop-at-17 with customer-hand-so-far = ("10h" "2c" "3c" "5d"),  dealer-up-card = ac
+.. <- stop-at-17 returns #f
+.. -> stop-at-17 with customer-hand-so-far = ("9c" jc),  dealer-up-card = "6d"
+.. <- stop-at-17 returns #f
+2
+STk> (play-n dealer-sensitive 4)
+.. -> dealer-sensitive with customer-hand-so-far = (qc "2d"),  dealer-up-card = kh
+.. <- dealer-sensitive returns #t
+.. -> dealer-sensitive with customer-hand-so-far = (qc "2d" "6s"),  dealer-up-card = kh
+.. <- dealer-sensitive returns #f
+.. -> dealer-sensitive with customer-hand-so-far = ("7h" "2c"),  dealer-up-card = "7d"
+.. <- dealer-sensitive returns #t
+.. -> dealer-sensitive with customer-hand-so-far = ("7h" "2c" "4s"),  dealer-up-card = "7d"
+.. <- dealer-sensitive returns #t
+.. -> dealer-sensitive with customer-hand-so-far = ("7h" "2c" "4s" "6c"),  dealer-up-card = "7d"
+.. <- dealer-sensitive returns #f
+.. -> dealer-sensitive with customer-hand-so-far = ("3d" qh),  dealer-up-card = "5s"
+.. <- dealer-sensitive returns #f
+.. -> dealer-sensitive with customer-hand-so-far = ("9c" "7c"),  dealer-up-card = "3c"
+.. <- dealer-sensitive returns #f
+0
+STk> (play-n (stop-at 20) 4)
+.. -> stop-at with n = 20
+.. <- stop-at returns #[closure arglist=(c d) 7ff25b68]
+-2
+STk> (trace valentines valentines-1 suit-strategy)
+STk> (trace valentine valentine-1)
+okay
+STk> (play-n valentine 4)
+.. -> valentine with c = (qh ad),  d = qs
+.. <- valentine returns #f
+.. -> valentine with c = (qc "6s"),  d = "10c"
+.. <- valentine returns #t
+.. -> valentine with c = ("3d" "3s"),  d = "6d"
+.. <- valentine returns #t
+.. -> valentine with c = ("3d" "3s" ah),  d = "6d"
+.. <- valentine returns #t
+.. -> valentine with c = ("3d" "3s" ah ac),  d = "6d"
+.. <- valentine returns #t
+.. -> valentine with c = ("3d" "3s" ah ac "8c"),  d = "6d"
+.. <- valentine returns #t
+.. -> valentine with c = ("3d" "3s" ah ac "8c" ad),  d = "6d"
+.. <- valentine returns #t
+.. -> valentine with c = ("8d" qs),  d = "3s"
+.. <- valentine returns #f
+0
+STk> (play-n valentine-1 4)
+.. -> valentine-1 with c = (jh "10s"),  d = "6c"
+.. <- valentine-1 returns #f
+.. -> valentine-1 with c = ("8h" "5c"),  d = "6h"
+.. <- valentine-1 returns #t
+.. -> valentine-1 with c = ("8h" "5c" "4s"),  d = "6h"
+.. <- valentine-1 returns #t
+.. -> valentine-1 with c = (qd "4s"),  d = "6h"
+.. <- valentine-1 returns #t
+.. -> valentine-1 with c = ("6c" "3s"),  d = ac
+.. <- valentine-1 returns #t
+.. -> valentine-1 with c = ("6c" "3s" "8c"),  d = ac
+.. <- valentine-1 returns #f
+-2
+STk> (trace majority majority-strategy) 
+okay
+STk> (play-n majority-strategy 4)
+.. -> majority-strategy with c = ("4c" "7d"),  d = "10s"
+.... -> majority with strategy-1 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff0f948],  strategy-2 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff10068],  strategy-3 = #[closure arglist=l 7ff12728]
+.... <- majority returns #[closure arglist=(c d) 7ff2ee48]
+.. <- majority-strategy returns #t
+.. -> majority-strategy with c = ("4c" "7d" "8c"),  d = "10s"
+.... -> majority with strategy-1 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff0f948],  strategy-2 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff10068],  strategy-3 = #[closure arglist=l 7ff12728]
+.... <- majority returns #[closure arglist=(c d) 7ff17628]
+.. <- majority-strategy returns #f
+.. -> majority-strategy with c = (jh "3c"),  d = "4h"
+.... -> majority with strategy-1 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff0f948],  strategy-2 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff10068],  strategy-3 = #[closure arglist=l 7ff12728]
+.... <- majority returns #[closure arglist=(c d) 7ff101a8]
+.... -> valentine with c = (jh "3c"),  d = "4h"
+.... <- valentine returns #t
+.. <- majority-strategy returns #t
+.. -> majority-strategy with c = (jh "3c" "5h"),  d = "4h"
+.... -> majority with strategy-1 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff0f948],  strategy-2 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff10068],  strategy-3 = #[closure arglist=l 7ff12728]
+.... <- majority returns #[closure arglist=(c d) 7ff86288]
+.. <- majority-strategy returns #f
+.. -> majority-strategy with c = ("5d" "9d"),  d = "5h"
+.... -> majority with strategy-1 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff0f948],  strategy-2 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff10068],  strategy-3 = #[closure arglist=l 7ff12728]
+.... <- majority returns #[closure arglist=(c d) 7fed79d8]
+.... -> valentine with c = ("5d" "9d"),  d = "5h"
+.... <- valentine returns #t
+.. <- majority-strategy returns #t
+.. -> majority-strategy with c = ("4c" "4s"),  d = "7d"
+.... -> majority with strategy-1 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff0f948],  strategy-2 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff10068],  strategy-3 = #[closure arglist=l 7ff12728]
+.... <- majority returns #[closure arglist=(c d) 7ff2afe8]
+.. <- majority-strategy returns #t
+.. -> majority-strategy with c = ("4c" "4s" kc),  d = "7d"
+.... -> majority with strategy-1 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff0f948],  strategy-2 = #[closure arglist=(customer-hand-so-far dealer-up-card) 7ff10068],  strategy-3 = #[closure arglist=l 7ff12728]
+.... <- majority returns #[closure arglist=(c d) 7ff146d8]
+.. <- majority-strategy returns #f
+0
+STk> (trace reckless reckless-valentine)
+okay
+STk> (play-n reckless-valentine 4)
+.. -> reckless-valentine with c = ("7c" kc),  d = "2d"
+.... -> reckless with strategy = #[closure arglist=l 7ff12728]
+.... <- reckless returns #[closure arglist=(c d) 7ff9a0b8]
+.... -> valentine with c = ("7c"),  d = "2d"
+.... <- valentine returns #t
+.. <- reckless-valentine returns #t
+.. -> reckless-valentine with c = ("2h" "6c"),  d = jd
+.... -> reckless with strategy = #[closure arglist=l 7ff12728]
+.... <- reckless returns #[closure arglist=(c d) 7ff26698]
+.... -> valentine with c = ("2h"),  d = jd
+.... <- valentine returns #t
+.. <- reckless-valentine returns #t
+.. -> reckless-valentine with c = ("2h" "6c" "5s"),  d = jd
+.... -> reckless with strategy = #[closure arglist=l 7ff12728]
+.... <- reckless returns #[closure arglist=(c d) 7ff19dd8]
+.... -> valentine with c = ("2h" "6c"),  d = jd
+.... <- valentine returns #t
+.. <- reckless-valentine returns #t
+.. -> reckless-valentine with c = ("2h" "6c" "5s" "3h"),  d = jd
+.... -> reckless with strategy = #[closure arglist=l 7ff12728]
+.... <- reckless returns #[closure arglist=(c d) 7feed308]
+.... -> valentine with c = ("2h" "6c" "5s"),  d = jd
+.... <- valentine returns #t
+.. <- reckless-valentine returns #t
+.. -> reckless-valentine with c = ("2h" "6c" "5s" "3h" "5h"),  d = jd
+.... -> reckless with strategy = #[closure arglist=l 7ff12728]
+.... <- reckless returns #[closure arglist=(c d) 7ff867c8]
+.... -> valentine with c = ("2h" "6c" "5s" "3h"),  d = jd
+.... <- valentine returns #t
+.. <- reckless-valentine returns #t
+.. -> reckless-valentine with c = (kh "5c"),  d = "2h"
+.... -> reckless with strategy = #[closure arglist=l 7ff12728]
+.... <- reckless returns #[closure arglist=(c d) 7fede6b8]
+.... -> valentine with c = (kh),  d = "2h"
+.... <- valentine returns #t
+.. <- reckless-valentine returns #t
+.. -> reckless-valentine with c = (kh "5c" ad),  d = "2h"
+.... -> reckless with strategy = #[closure arglist=l 7ff12728]
+.... <- reckless returns #[closure arglist=(c d) 7ff97a88]
+.... -> valentine with c = (kh "5c"),  d = "2h"
+.... <- valentine returns #t
+.. <- reckless-valentine returns #t
+.. -> reckless-valentine with c = (kh "5c" ad "2c"),  d = "2h"
+.... -> reckless with strategy = #[closure arglist=l 7ff12728]
+.... <- reckless returns #[closure arglist=(c d) 7ff530d8]
+.... -> valentine with c = (kh "5c" ad),  d = "2h"
+.... <- valentine returns #t
+.. <- reckless-valentine returns #t
+.. -> reckless-valentine with c = ("10h" "3d"),  d = ad
+.... -> reckless with strategy = #[closure arglist=l 7ff12728]
+.... <- reckless returns #[closure arglist=(c d) 7fef4da8]
+.... -> valentine with c = ("10h"),  d = ad
+.... <- valentine returns #t
+.. <- reckless-valentine returns #t
+.. -> reckless-valentine with c = ("10h" "3d" "5d"),  d = ad
+.... -> reckless with strategy = #[closure arglist=l 7ff12728]
+.... <- reckless returns #[closure arglist=(c d) 7fed65c8]
+.... -> valentine with c = ("10h" "3d"),  d = ad
+.... <- valentine returns #t
+.. <- reckless-valentine returns #t
+-4
+
+ 

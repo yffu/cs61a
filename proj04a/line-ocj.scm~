@@ -1,0 +1,15 @@
+(define (line-object line-o-text)
+  (define empty?
+    (null? line-o-text))
+  (define next
+    (let ((next-value (car line-o-text)))
+      (begin (set! line-o-text (cdr line-o-text))
+	     next-value)))
+  (define put-back
+    (lambda (x) (set! line-o-text (cons x line-o-text))))
+  (define (dispatch m)
+    (cond ((eq? m 'empty?) empty?)
+	  ((eq? m 'next) next)
+	  ((eq? m 'put-back) put-back)
+	  (else (error "Method not found"))))
+  dispatch)

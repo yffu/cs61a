@@ -1,0 +1,161 @@
+okay
+STk> (define x (con 4 5))
+*** Error:
+    unbound variable: con
+Current eval stack:
+__________________
+  0    (con 4 5)
+  1    (define x (con 4 5))
+STk> (define x (cons 4 5))
+x
+STk> (car x)
+4
+STk> (cdr x)
+5
+STk> (define y (cons 'hello 'goodbye))
+y
+STk> (define z (cons x y))
+z
+STk> (car z)
+(4 . 5)
+STk> (cdr z)
+(hello . goodbye)
+STk> (cdr (car z))
+5
+STk> (car (cons 8 3))
+8
+STk> (car z)
+(4 . 5)
+STk> (car 3)
+*** Error:
+    car: wrong type of argument: 3
+Current eval stack:
+__________________
+  0    (car 3)
+STk> (define (make-rational num den)
+(cons num den))
+make-rational
+STk> (define (numerator rat)
+(car rat))
+numerator
+STk> (define (denominator rat)
+(cdr rat))
+denominator
+STk> (define (*rat a b)
+(make-rational (* (numerator a) (numerator b)) (* denominator a) (denominator b)))
+*rat
+STk>  (define (print-rat rat)
+(word (car rat) '/ (cdr rat)))
+print-rat
+STk> (print-rat (make-rational 2 3))
+"2/3"
+STk> (print-rat (*rat (make-rational 2 3) (make-rational 1 4)))
+*** Error:
+    *: not a number: #[closure arglist=(rat) 7ff13458]
+Current eval stack:
+__________________
+  0    (apply fn (map maybe-num args))
+  1    (make-rational (* (numerator a) (numerator b)) (* denominator a) (denominator b))
+  2    (print-rat (*rat (make-rational 2 3) (make-rational 1 4)))
+STk> denominator
+
+#[closure arglist=(rat) 7ff13458]
+STk> (print-rat (*rat (make-rational 2 3) (make-rational 1 4)))
+*** Error:
+    *: not a number: #[closure arglist=(rat) 7ff13458]
+Current eval stack:
+__________________
+  0    (apply fn (map maybe-num args))
+  1    (make-rational (* (numerator a) (numerator b)) (* denominator a) (denominator b))
+  2    (print-rat (*rat (make-rational 2 3) (make-rational 1 4)))
+STk> 
+(define (print-rat rat)
+(word (numerator rat) '/ (denominator rat))
+)
+print-rat
+STk> (print-rat (*rat (make-rational 2 3) (make-rational 1 4)))
+*** Error:
+    *: not a number: #[closure arglist=(rat) 7ff13458]
+Current eval stack:
+__________________
+  0    (apply fn (map maybe-num args))
+  1    (make-rational (* (numerator a) (numerator b)) (* denominator a) (denominator b))
+  2    (print-rat (*rat (make-rational 2 3) (make-rational 1 4)))
+STk> (print-rat (*rat (make-rational 2 3)) (make-rational 1 4))
+*** Error:
+    too few arguments to: (*rat (make-rational 2 3))
+Current eval stack:
+__________________
+  0    (*rat (make-rational 2 3))
+  1    (print-rat (*rat (make-rational 2 3)) (make-rational 1 4))
+STk> )
+read: unexpected close parenthesis
+(print-rat (*rat (make-rational 2 3)) (make-rational 1 4))
+*** Error:
+    too few arguments to: (*rat (make-rational 2 3))
+Current eval stack:
+__________________
+  0    (*rat (make-rational 2 3))
+  1    (print-rat (*rat (make-rational 2 3)) (make-rational 1 4))
+STk> (print-rat (*rat (make-rational 2 3) (make-rational 1 4)))
+*** Error:
+    *: not a number: #[closure arglist=(rat) 7ff13458]
+Current eval stack:
+__________________
+  0    (apply fn (map maybe-num args))
+  1    (make-rational (* (numerator a) (numerator b)) (* denominator a) (denominator b))
+  2    (print-rat (*rat (make-rational 2 3) (make-rational 1 4)))
+STk> (define (*rat a b)
+(make-rational (* (numerator a) (numerator b)) (* (denominator a) (denominator b))))
+*rat
+STk>  (print-rat (*rat (make-rational 2 3) (make-rational 1 4)))
+"2/12"
+STk> (define (+rat rat)
+(make-rational (+ (* (numerator a) (denominator b)) (* (numerator b) (denominator a))) (* (denominator a) (denominator b))))
++rat
+STk> (print-rat (+rat (make-rational 2 3) (make-rational 7 3)))
+*** Error:
+    too many arguments to: (+rat (make-rational 2 3) (make-rational 7 3))
+Current eval stack:
+__________________
+  0    (+rat (make-rational 2 3) (make-rational 7 3))
+  1    (print-rat (+rat (make-rational 2 3) (make-rational 7 3)))
+STk> (define (*rat a b)
+(make-rational (+ (* (numerator a) (denominator b)) (* (numerator b) (denominator a)) ) (* (denominator a) (denominator b))))
+*rat
+STk> (define (+rat a b)
+(make-rational (+ (* (numerator a) (denominator b)) (* (numerator b) (denominator a)) ) (* (denominator a) (denominator b))))
++rat
+STk> (print-rat (+rat (make-rational 2 3) (make-rational 7 3)))
+"27/9"
+STk> (display ")")
+)okay
+STk> (define a (make-segment (make-point 0 0)) (make-segment (make-point 4 4)))
+*** Error:
+    define: bad definition: (a (make-segment (make-point 0 0)) (make-segment (make-point 4 4)))
+Current eval stack:
+__________________
+  0    (define a (make-segment (make-point 0 0)) (make-segment (make-point 4 4)))
+STk> (define a (make-segment (make-point 0 0) (make-point 4 4)))
+*** Error:
+    unbound variable: make-segment
+Current eval stack:
+__________________
+  0    (make-segment (make-point 0 0) (make-point 4 4))
+  1    (define a (make-segment (make-point 0 0) (make-point 4 4)))
+STk> (load "lab4.scm")
+okay
+STk> (define a (make-segment (make-point 0 0) (make-point 4 4)))
+a
+STk> (define a (make-segment (make-point 0 0) (make-point 4 4)))
+a
+STk> (midpoint-segment a)
+(2 . 2)
+STk> (expand (define (rectangle-area rectangle)
+  (* (rect-width rectangle) (rect-height rectangle))))
+*** Error:
+    unbound variable: expand
+Current eval stack:
+__________________
+  0    (expand (define (rectangle-area rectangle) (* (rect-width rectangle) (rect-height rectangle))))
+STk> (abs -1_

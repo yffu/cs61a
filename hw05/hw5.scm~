@@ -1,0 +1,153 @@
+; Yuan Fang Fu
+; cs61a-ae
+; TA: Darren Kuo
+; Section: 13 Group: 08
+
+; Ex. 2.24
+
+; --->XX---X/
+;     |    |
+;     |    |
+;     V    V
+;     1    XX--->X/
+;          |     |
+;          |     V
+;          V     XX--->X/
+;          2     |     |
+;                V     V
+;                3     4
+
+; (1  (2  (3  4)))
+
+; Ex. 2.26
+
+; (append x y) --> (1 2 3 4 5 6)
+; (cons x y) --> ((1 2 3) 4 5 6)
+; (list x y) --> ((1 2 3) (4 5 6))
+
+; Ex. 2.29
+
+(define (make-mobile left right) ; part a
+  (list left right))
+
+(define (make-branch length structure)
+  (list length structure))
+
+(define (left-branch mobile)
+  (car mobile))
+
+(define (right-branch mobile)
+  (car (cdr mobile)))
+
+(define (branch-structure branch)
+  (car branch))
+
+(define (length-structure branch)
+  (car (cdr mobile)))
+
+(define (total-weight mobile)  ; part b works for even simplest mobile
+  (let ((left (left-branch mobile))
+	(right (right-branch mobile))
+	(+ (if (not (pair? (branch-structure left)))
+	       (branch-structure  left)
+	       (total-weight left))
+	   (if (not (pair? (left-branch right)))
+	       (branch-structure  right)
+	       (total-weight right))))))
+
+(define (balanced? mobile) ; part c
+  (let ((left (left-branch mobile))
+	(right (right-branch mobile))
+	(torque (lambda (branch) (* (total-weight branch) (length-structure branch))))
+	(if (= (torque left) (torque right))
+	    (cond ((pair? left)
+		   (if (pair? right) (and (balanced? left) (balanced? right))
+		       (balanced? left)))
+		  ((pair? right)
+		   (if (pair? left) (and (balanced? right) (balanced? left))
+		       (balanced? right)))
+		  (else #t))
+	    #f))))
+
+(define (make-mobile left right) ; part d
+  (cons left right))
+
+(define (make-branch length structure)
+  (cons length structure))
+
+; not much needs to be changed in the function itself, except the names of the constructors and the selectors. The selectors would need to be modified to get data out of a pair instead of a list. This can be done by simply changing the right-branch and length-structure to have the value of cd 
+
+; Ex. 2.30
+
+(define (square-list items)
+  (define (iter things answer)
+    (if (null? things)
+	answer
+	(iter (cdr things)
+	      (cons answer
+		    (square (car things))))))
+  (iter items nil))
+
+(define (square x)
+  (* x x))
+
+(define (square-tree items) ; direct implementation
+  (cond ((null? items) nil)
+	((not (pair? items)) (square items))
+	(else (cons (square-tree (car items)) (square-tree (cdr items))))))
+
+(define (square-tree-map items)
+  (map (lambda (sub-tree)
+	 (if (pair? sub-tree)
+	     (square-tree-map sub-tree)
+	     (square sub-tree)))
+       items))
+
+; Ex. 2.31
+
+(define (tree-map func tree)
+  (map (lambda (sub-tree)
+	 (if (pair? sub-tree)
+	     (tree-map func sub-tree)
+	     (func sub-tree)))
+       tree))
+
+(define (square-tree-abstract tree) (tree-map square tree))
+
+; Ex. 2.32
+
+(define (subsets s)
+  (if (null? s)
+      (list nil)
+      (let ((rest (subsets (cdr s))))
+	(append rest (map (lambda (set) (cons (car s) set))  rest)))))
+
+; the set of all subsets containing elements of a list, can be divided into two groups:
+; one is the set of all subsets created from the cdr of the list.
+; the other is the set of all subsets with the car of list added to each set in the first group.
+; car of the list is mapped to each element of the first group, and
+; appended to the list of subsets of cdr list
+
+; Ex. 2.36
+
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      nil
+      (cons (accumulate op init (map car seqs))
+	    (accumulate-n op init (map cdr seqs)))))
+
+; Ex. 2.37
+
+(define (dot-product v w)
+  (accumulate + 0 (map * v w)))
+
+(define (matrix-*-vector m v)
+  (map   m))
+
+(define (transpose mat)
+  (accumulate-n  mat))
+
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map m)))
+
